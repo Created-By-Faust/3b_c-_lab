@@ -4,56 +4,35 @@
 
 using namespace std;
 
+istream & operator>> (istream & in, Func & uz)
+{
+    if (uz.size_coor >= uz.SZ)
+        return in;
+    
+    cout << "Enter X:";
+    in >> uz.Arr[uz.size_coor].x;
+    
+    cout << "Enter Y:";
+    in >> uz.Arr[uz.size_coor].y;
+    
+    cout << "\n";
+    uz.size_coor++;
+    
+    return in;
+}
 
-int Func::addUzel(){
-    int k = 0;
-    if(first_input == true ){
-        cout << "Сколько узлов ты хочешь создать?\n"
-        ":";
-        if(get_num(k)<0){
-            cout << "Error";
-            return -1;
-        }
-        if( k > SZ ){
-            cout << " Количество узлов превосходит разрешённое";
-            return -2;
-        }
-        first_input = false;
-        for (int i = 0; i < k ; i++){
-            cout << "Enter X:";
-             get_num(Arr[i].x);
-            
-            
-            cout << "Enter Y:";
-            get_num(Arr[i].y);
-            
-            cout << "\n";
-            size_coor++;
-        }
-    }
-    
-    if (first_input == false and k == 0){
-    
-        if (size_coor < SZ) {
-        cout << "Enter X:";
-        get_num(Arr[size_coor].x);
-        
-        cout << "Enter Y:";
-        get_num(Arr[size_coor].y);
-        
-        cout << "\n";
-        size_coor++;
-    }
-    else{
-        cout<< "Количество узлов максимально";
-    }
-    
-    }
-    return 0;
+Func& Func::operator+= (const uzel & uz)
+{
+    if (size_coor >= SZ)
+        return *this;
+    Arr[size_coor] = uz;
+    size_coor++;
+    return *this;
 }
 
 //Пузырьковая сортировка
-void Func::sortBubl() {
+void Func::sortBubl()
+{
     int last = size_coor; bool ok;
     do {
         last = last - 1;
@@ -72,7 +51,8 @@ void Func::sortBubl() {
     } while (!ok);
 }
 
-double Func::maximum(){
+double Func::maximum()
+{
     double max = Arr[0].x;
     for (int i = 0; i < size_coor; i++)
     {
@@ -120,7 +100,7 @@ void Func::typeF()
 }
 
 
-double Func::calculateF( double xO)
+double Func::operator() ( double xO)
 {
     sortBubl();
     double max = Arr[0].x;
@@ -145,18 +125,15 @@ double Func::calculateF( double xO)
 
 }
 
-ostream & Func::printFunc(ostream &buf) const
-{   int size = size_coor;
-    for ( int i = 0; i < size && i < SZ; i++){
+Func::operator bool() const{
+    return size_coor > 0;
+}
+ostream & operator<<(ostream &buf, const Func & uz)
+{   int size = uz.size_coor;
+    for ( int i = 0; i < size && i < uz.SZ; i++){
         buf
-        <<"f("<< Arr[i].x << ") = " << Arr[i].y << endl;
+        <<"f("<< uz.Arr[i].x << ") = " << uz.Arr[i].y << endl;
         
     }
     return buf;
 }
-
-
-
-
-
-

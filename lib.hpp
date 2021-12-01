@@ -1,4 +1,9 @@
-
+//
+//  lib.hpp
+//  laba 3 ++
+//
+//  Created by Дмитрий Емелин on 21.10.2021.
+//
 
 #ifndef lib_hpp
 #define lib_hpp
@@ -6,7 +11,7 @@
 #include <stdio.h>
 using namespace std;
 
-template <class T>
+template <typename T>
 int get_num(T& i) {
 
     do {
@@ -38,10 +43,10 @@ private:
     static const int SZ = 5;
     uzel Arr[SZ];
     int size_coor = 0;
-    bool first_input = true;
 
 public:
     Func() = default;
+    
     Func(double X_coor, double Y_coor) //конструктор по добавлению одного узла
     {
         if (size_coor < SZ) {
@@ -62,6 +67,7 @@ public:
         size_coor = k;
 
     }
+    
     //Пузырьковая сортировка
     void sortBubl();
 
@@ -73,12 +79,16 @@ public:
     
     void typeF();
 
-    double calculateF( double xO);
+    double operator() ( double xO);
+    operator bool() const;
     
-    ostream & printFunc(std::ostream &buf) const;
-
-   
-    int addUzel();
+    Func& operator+= (const uzel & uz);
+    int createUzel();
+    
+    friend std::istream & operator >> (std::istream & buf, Func & uz);
+    friend std::ostream & operator << (std::ostream& buf, const Func & uz);
+    
+    int getSZ() const{ return SZ;}
     };
 
 
